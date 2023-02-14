@@ -1,37 +1,44 @@
 let slides = document.querySelectorAll("div.slider__item");
 let sliderDots = document.querySelectorAll("div.slider__dot");
-let currentSlide = 0;
 let rightSwitch = document.querySelector("div.slider__arrow_next");
 let leftSwitch = document.querySelector("div.slider__arrow_prev");
 const totalSlides = slides.length - 1;
 
-rightSwitch.addEventListener('click', () => switchSlide("right"));
-leftSwitch.addEventListener('click', ()=> switchSlide("left"));
+rightSwitch.addEventListener('click', () => switchSlide(1));
+leftSwitch.addEventListener('click', ()=> switchSlide(-1));
+
 for (let i = 0; i<sliderDots.length;i++){
-    sliderDots[i].addEventListener('click', ()=> goToSlide(i));
+    sliderDots[i].addEventListener('click', ()=> {
+        const activeDot = document.querySelector("div.slider__dot_active");
+        let activeDotId = 0;
+        for (const dot of sliderDots.entries()) {
+            if (dot[1] === activeDot){
+                activeDotId = dot[0];
+            }
+        }
+        goToSlide(activeDotId,i);
+    });
 }
 
-
-function switchSlide(direction){
-    let step = 1;
-    if (direction === "left"){
-        step = -1;
+function switchSlide(step){
+    let activeSlideId = 0;
+    const activeSlide = document.querySelector("div.slider__item_active");
+    for (const slide of slides.entries()) {
+        if (slide[1] === activeSlide){
+            activeSlideId = slide[0];
+        }
     }
-    let nextSlide = currentSlide + step;
-    goToSlide(nextSlide);
-
+    goToSlide(activeSlideId,activeSlideId + step);
 }
 
-function goToSlide(num){
-    let targetSlide = num;
-    if (targetSlide < 0){
-        targetSlide = totalSlides;
-    }else if (targetSlide > totalSlides){
-        targetSlide = 0;
+function goToSlide(slideFrom,slideTo){
+    if (slideTo < 0){
+        slideTo = totalSlides;
+    }else if (slideTo > totalSlides){
+        slideTo = 0;
     }
-    slides[currentSlide].classList.remove("slider__item_active");
-    sliderDots[currentSlide].classList.remove("slider__dot_active");
-    slides[targetSlide].classList.add("slider__item_active");
-    sliderDots[targetSlide].classList.add("slider__dot_active");
-    currentSlide = targetSlide;
+    slides[slideFrom].classList.remove("slider__item_active");
+    sliderDots[slideFrom].classList.remove("slider__dot_active");
+    slides[slideTo].classList.add("slider__item_active");
+    sliderDots[slideTo].classList.add("slider__dot_active");
 }

@@ -7,8 +7,12 @@ for (let i=0; i<menuButtons.length; i++){
         menuLink.onclick = function (){
             let visibleSubMenus = document.querySelectorAll('ul.menu_active');
             if (visibleSubMenus !== null){
+
                 for (let menu of visibleSubMenus){
                     menu.classList.remove("menu_active");
+                    if (menu === subMenu){
+                        return false
+                    }
                 }
             }
             subMenu.classList.add("menu_active");

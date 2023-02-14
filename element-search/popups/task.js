@@ -1,25 +1,22 @@
-document.getElementById('modal_main').classList.add('modal_active');
+document.getElementById("modal_main").classList.add("modal_active");
 
-const modals = document.querySelectorAll('div.modal');
+const closeButtons = document.querySelectorAll("div.modal__close");
+const closeLinks = document.querySelectorAll("a.modal__close");
 
-for (let i = 0; i < modals.length; i++) {
-    let closeButton = modals[i].querySelector('div.modal__close');
-    closeButton.addEventListener('click', closeActiveModal);
-
-    let sucessButton = modals[i].querySelector('a.show-success');
-    if (sucessButton !== null){
-        sucessButton.addEventListener('click', showSuccessModal);
-    }
+for (const closeButton of closeButtons.values()){
+    closeButton.addEventListener('click',closeModals);
 }
-
-function closeActiveModal(){
-    for (let i = 0; i < modals.length; i++) {
-        if (modals[i].classList.contains('modal_active')){
-            modals[i].classList.remove('modal_active');
+for (const closeLink of closeLinks.values()){
+    closeLink.addEventListener('click',() => {
+        closeModals();
+        if (closeLink.classList.contains("show-success")){
+            document.getElementById("modal_success").classList.add("modal_active");
         }
-    }
+    })
 }
-function showSuccessModal(){
-    let modalSuccess = document.getElementById('modal_success');
-    modalSuccess.classList.add('modal_active');
+function closeModals(){
+    const activeModals = document.querySelectorAll("div.modal_active");
+    for (const modal of activeModals.values()){
+        modal.classList.remove("modal_active");
+    }
 }
